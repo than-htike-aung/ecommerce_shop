@@ -40,6 +40,11 @@
 </nav>
 <div class="wrapper">
     <div class="container" style="margin-top: 50px">
+        @if(session()->has('msg'))
+            <div class="alert alert-success">
+                {{session()->get('msg')}}
+            </div>
+        @endif
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">

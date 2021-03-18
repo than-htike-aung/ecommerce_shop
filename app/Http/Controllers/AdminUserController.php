@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('guest:admin')->except('logout');
+    }
+
     public function index(){
         return view('admin.login');
     }
@@ -19,7 +25,7 @@ class AdminUserController extends Controller
         ]);
         //Log the user in
         $credentials = $request->only('email', 'password');
-        if(! Auth::guard('admin')->attempt($credentials)){
+        if(!Auth::guard('admin')->attempt($credentials)){
             return back()->withErrors([
                'message' => 'Wrong credentials please try again'
             ]);
@@ -29,5 +35,13 @@ class AdminUserController extends Controller
         session()->flash('msg','You have been logged in' );
         //Redirect
         return redirect('/admin');
+    }
+
+    public function logout(){
+        auth()->guard('admin')->logout();
+
+        session()->flash('msg', 'You have been logged out');
+
+        return redirect('/admin/login');
     }
 }
